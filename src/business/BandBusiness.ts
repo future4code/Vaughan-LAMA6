@@ -4,45 +4,43 @@ import { BandDatabase } from "../data/BandDatabase";
 import { BandInputDTO, Band } from "../model/Band";
 
 export class BandBusiness {
+  async createBand(input: BandInputDTO, token: string) {
+    const idGenerator = new IdGenerator();
+    const id = idGenerator.generate();
 
-    async createBand(input: BandInputDTO, token: string) {
-        const idGenerator = new IdGenerator();
-        const id = idGenerator.generate();
+    const authenticator = new Authenticator();
+    const user = authenticator.getData(token);
 
-        const authenticator = new Authenticator();
-        const user = authenticator.getData(token);
-
-        if(user.role !== "ADMIN"){
-            throw new Error("You are not authorized to create a band!");
-        }
-
-        const bandDatabase = new BandDatabase();
-        const band = await bandDatabase.createBand(id, input.name, input.genre, input.responsible);
-
-        return band + " Created successfully!";
+    if (user.role !== "ADMIN") {
+      throw new Error("You are not authorized to create a band!");
     }
 
-    async getBandByIdOrName(name: string, id: string) {
-        const bandDatabase = new BandDatabase();
+    const bandDatabase = new BandDatabase();
+    await bandDatabase.createBand(
+      id,
+      input.name,
+      input.genre,
+      input.responsible
+    );
 
-        if(id && name){
-            throw new Error("You can't search for a band by id and name at the same time!");
-        }
+    return "Band created successfully!";
+  }
 
-        if(!id && !name){
-            throw new Error("You must search for a band by id or name!");
-        }
+  async getBandByIdOrName(info: string): Promise<Band> {
+    console.log(info)
+    const bandDatabase = new BandDatabase();
+    
 
-        if(!id){
-            const band = await bandDatabase.getBandByName(name);
-            return band;
-        }
+    try {
 
-        if(!name){
-            const band = await bandDatabase.getBandById(id);
-            return band;
-        }
+      if (!info) {
+        throw new Error("Information not found");
+      }
+      const result = await bandDatabase.getBandByIdOrName(info);
+
+      return result;
+    } catch (error: any) {
+      throw new Error(error.message);
     }
+  }
 }
-
-

@@ -24,21 +24,18 @@ export class BandDatabase extends BaseDatabase {
         }
     }
 
-    public async getBandById(id: string): Promise<Band> {
-        const result = await this.getConnection()
+    public async getBandByIdOrName(info:string): Promise<any> {
+        try{
+            const result = await this.getConnection()
             .select("*")
             .from(BandDatabase.TABLE_NAME)
-            .where({ id });
+            .where("name", info)
+            .orWhere("id", info);
 
-        return Band.toBandModel(result[0]);
+            return Band.toBandModel(result[0]);
+        }catch(error:any){
+            throw new Error(error.sqlMessage || error.message);
+        }
     }
 
-    public async getBandByName(name: string): Promise<Band> {
-        const result = await this.getConnection()
-            .select("*")
-            .from(BandDatabase.TABLE_NAME)
-            .where({ name });
-
-        return Band.toBandModel(result[0]);
-    }
 }
