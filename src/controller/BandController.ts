@@ -11,7 +11,7 @@ export class BandController {
                 name: req.body.name,
                 genre: req.body.genre,
                 responsible: req.body.responsible
-            }
+            };
 
             const bandBusiness = new BandBusiness();
 
@@ -30,14 +30,15 @@ export class BandController {
         await BaseDatabase.destroyConnection();
     }
 
-    async getBandByIdOrName(req: Request, res: Response) {
+    async getBandByIdOrName(req: Request, res: Response):Promise<void> {
         try {
             const bandBusiness = new BandBusiness();
            
-            const name = req.query.name as string;
-            const id = req.query.id as string;
+            const info = req.query.name || req.query.id;
 
-            res.status(200).send(await bandBusiness.getBandByIdOrName(name, id));
+            const result = await bandBusiness.getBandByIdOrName(String(info));
+
+            res.status(200).send(result);
         } catch (error) {
             if(error instanceof Error){
                 res.status(400).send({ error: error.message });
