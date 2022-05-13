@@ -27,7 +27,6 @@ export class BandBusiness {
   }
 
   async getBandByIdOrName(info: string): Promise<Band> {
-    console.log(info)
     const bandDatabase = new BandDatabase();
     
 
