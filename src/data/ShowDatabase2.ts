@@ -3,6 +3,9 @@ import { BaseDatabase } from "./BaseDatabase";
 
 
 export class ShowDatabase extends BaseDatabase {
+  static getShowByWeekDay(info: string) {
+    throw new Error("Method not implemented.");
+  }
     private static TABLE_NAME = "NOME_TABELA_SHOWS";
 
    public async getShowByWeekDay(info:string): Promise<any> {

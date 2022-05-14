@@ -7,7 +7,7 @@ export class ShowController {
 
   async getShowByWeekDay(req: Request, res: Response):Promise<void> {
     try {
-        const ShowBusiness = new ShowBusiness();
+        const showBusiness = new ShowBusiness();
        
         const info = req.query.name
 

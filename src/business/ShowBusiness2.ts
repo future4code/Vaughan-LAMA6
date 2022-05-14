@@ -1,13 +1,16 @@
-import { BandDatabase } from "../data/BandDatabase";
+
 import { ShowDatabase } from "../data/ShowDatabase2";
 import { Show } from "../model/Show2";
 
 
 export class ShowBusiness {
+  static getShowByWeekDay(arg0: string) {
+      throw new Error("Method not implemented.");
+  }
 
   async getShowByWeekDay(info: string): Promise<Show> {
     console.log(info)
-    const ShowDatabase = new ShowDatabase();
+    const showDatabase = new ShowDatabase();
     
 
     try {
@@ -17,7 +20,7 @@ export class ShowBusiness {
       }
       const result = await ShowDatabase.getShowByWeekDay(info);
 
-      return result;
+      return Show.toShowModel(result);
     } catch (error: any) {
       throw new Error(error.message);
     }
