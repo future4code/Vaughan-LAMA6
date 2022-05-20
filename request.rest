@@ -1,0 +1,2 @@
+GET http://localhost:3000/band/details?name=Roqueira da gota
+Content-Type: application/json
